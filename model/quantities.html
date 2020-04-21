@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Quantities and Conventions &#8212; MUSE 0.6 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Market Clearing Algorithm" href="mca.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mca.html" title="Market Clearing Algorithm"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MUSE 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Model Description</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="quantities-and-conventions">
+<span id="conventions"></span><h1>Quantities and Conventions<a class="headerlink" href="#quantities-and-conventions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="indices">
+<span id="id1"></span><h2>Indices<a class="headerlink" href="#indices" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt><span class="math notranslate nohighlight">\(t\)</span></dt><dd><p>technologies</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(c\)</span></dt><dd><p>commodities</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(s\)</span></dt><dd><p>timeslices</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(r\)</span></dt><dd><p>regions</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(y\)</span></dt><dd><p>years</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(\iota\)</span></dt><dd><p>installation period</p>
+</dd>
+<dt><span class="math notranslate nohighlight">\(a\)</span></dt><dd><p>Composite <em>asset</em> index, generally made up of technologies <span class="math notranslate nohighlight">\(t\)</span> and installation
+period <span class="math notranslate nohighlight">\(\iota\)</span></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="quantities">
+<span id="id2"></span><h2>Quantities<a class="headerlink" href="#quantities" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>time period, <span class="math notranslate nohighlight">\(\Delta y\)</span></dt><dd><p>Discretization of time in the simulation, in years.</p>
+</dd>
+<dt>Agent assets, <span class="math notranslate nohighlight">\(A^{i, r}_{t, \iota}(y)\)</span></dt><dd><p><span class="math notranslate nohighlight">\(i\)</span> is an index or a compound index over agents in the same region.</p>
+</dd>
+</dl>
+<dl class="simple" id="market">
+<dt>Market, <span class="math notranslate nohighlight">\(\mathcal{M}\)</span></dt><dd><ul class="simple">
+<li><p>Demand, <span class="math notranslate nohighlight">\(\mathcal{D}_{c, s, r}\)</span></p></li>
+<li><p>Production (Consumption), <span class="math notranslate nohighlight">\(\mathcal{C}_{c, s, r}\)</span></p></li>
+<li><p>Prices, <span class="math notranslate nohighlight">\(\mathcal{I}_{c, s, r}\)</span></p></li>
+</ul>
+</dd>
+<dt>Technodata</dt><dd><ul class="simple">
+<li><p>Utilization factor by asset, <span class="math notranslate nohighlight">\(T^{uf}\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Quantities and Conventions</a><ul>
+<li><a class="reference internal" href="#indices">Indices</a></li>
+<li><a class="reference internal" href="#quantities">Quantities</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview.html"
+                        title="previous chapter">Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mca.html"
+                        title="next chapter">Market Clearing Algorithm</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/model/quantities.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mca.html" title="Market Clearing Algorithm"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MUSE 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Model Description</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Sustainable Gas Institute.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

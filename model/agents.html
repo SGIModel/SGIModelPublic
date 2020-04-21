@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Agents &#8212; MUSE 0.6 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="User Guide" href="../user_guide/index.html" />
+    <link rel="prev" title="Sectors" href="sectors.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../user_guide/index.html" title="User Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sectors.html" title="Sectors"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MUSE 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Model Description</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="agents">
+<span id="model-agents"></span><h1>Agents<a class="headerlink" href="#agents" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In the current implementation, the agents are each responsible for parcelling out the
+demand they will fulfill from the needed demand or the missing demand. In this
+exposition, we ignore this implementational problem and pretend the sector has fully
+figured out what demand each agent will fulfill.</p>
+</div>
+<p>The main role of the agent is to invest in order to fulfill a given future demand. This
+demand is received from the sector. The investment procedure is meant to reflect the
+preferences of agents characteristic of groups of investors in a region. To this end,
+investment is articulated in the following way:</p>
+<div class="contents local topic" id="pseudo-code">
+<p class="topic-title">Pseudo-code</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#inputs" id="id2">Inputs</a></p></li>
+<li><p><a class="reference internal" href="#initial-housekeeping" id="id3">1. Initial housekeeping</a></p></li>
+<li><p><a class="reference internal" href="#filter-search-space" id="id4">2. Filter search space</a></p></li>
+<li><p><a class="reference internal" href="#compute-replacement-technology-cost-matrix" id="id5">3. Compute replacement-technology cost-matrix</a></p></li>
+<li><p><a class="reference internal" href="#compute-investment-constraints" id="id6">4. Compute investment constraints</a></p></li>
+<li><p><a class="reference internal" href="#determine-new-investments" id="id7">5. Determine new investments</a></p></li>
+<li><p><a class="reference internal" href="#fold-new-investments-into-assets" id="id8">6. Fold new investments into assets</a></p></li>
+<li><p><a class="reference internal" href="#outputs" id="id9">Outputs</a></p></li>
+</ul>
+</div>
+<div class="section" id="inputs">
+<h2><a class="toc-backref" href="#id2">Inputs</a><a class="headerlink" href="#inputs" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>technologies: a dataset describing the characteristics of the technologies in the
+sector</p></li>
+<li><p>market: MCA market, converted to the sector’s timeslices</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Demand, <span class="math notranslate nohighlight">\(\mathcal{D}_{c, s, r}\)</span>, commodities consumed by sectors</p></li>
+<li><p>Production (Consumption), <span class="math notranslate nohighlight">\(\mathcal{C}_{c, s, r}\)</span>, commodities produced by
+sectors</p></li>
+<li><p>Prices, <span class="math notranslate nohighlight">\(\mathcal{I}_{c, s, r}\)</span>, current market prices</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>demand: share of the market demand this agent will satisfy</p></li>
+</ul>
+</div>
+<div class="section" id="initial-housekeeping">
+<h2><a class="toc-backref" href="#id3">1. Initial housekeeping</a><a class="headerlink" href="#initial-housekeeping" title="Permalink to this headline">¶</a></h2>
+<p>This step gives the code the opportunity to do some housekeeping, e.g. to limit the
+growth in memory requirements. Currently, <em>retrofit</em> agents remove technologies which
+no longer have capacity now or in the future. <em>New</em> agents do nothing.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <a class="reference internal" href="../user_guide/inputs/agents.html#inputs-agents"><span class="std std-ref">csv file defining agents</span></a> does not allow for modifying
+the initial housekeeping operation.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../developer_guide/api.html#muse.hooks.register_initial_asset_transform" title="muse.hooks.register_initial_asset_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">hooks.register_initial_asset_transform()</span></code></a>, <a class="reference internal" href="../developer_guide/api.html#muse.hooks.clean" title="muse.hooks.clean"><code class="xref py py-func docutils literal notranslate"><span class="pre">hooks.clean()</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="filter-search-space">
+<h2><a class="toc-backref" href="#id4">2. Filter search space</a><a class="headerlink" href="#filter-search-space" title="Permalink to this headline">¶</a></h2>
+<p>In this step, the space of available replacement technologies is filtered down to those an
+agent will consider. The search space is defined in terms of a matrix of boolean values:</p>
+<p>The result <code class="docutils literal notranslate"><span class="pre">search_space</span></code> is a matrix defining the relationship between an existing
+installed technology and the techologies an agent will consider to replace it:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{S}_{t, u} \in {0, 1}\]</div>
+<p>With <span class="math notranslate nohighlight">\(t\)</span> and index over the technologies to be replaced, and <span class="math notranslate nohighlight">\(u\)</span> an index
+over replacement technologies.</p>
+<p>In practice, the technologies to be replaced <span class="math notranslate nohighlight">\(t\)</span> are determined by
+<code class="docutils literal notranslate"><span class="pre">initial_filter</span></code>. <code class="docutils literal notranslate"><span class="pre">initial_filter</span></code> can be any function registered with
+<a class="reference internal" href="../developer_guide/api.html#muse.filters.register_initializer" title="muse.filters.register_initializer"><code class="xref py py-func docutils literal notranslate"><span class="pre">filters.register_initializer()</span></code></a>. In general, <code class="docutils literal notranslate"><span class="pre">initial_filter</span></code> is
+<a class="reference internal" href="../developer_guide/api.html#muse.filters.initialize_from_technologies" title="muse.filters.initialize_from_technologies"><code class="xref py py-func docutils literal notranslate"><span class="pre">filters.initialize_from_technologies()</span></code></a>, and hence <span class="math notranslate nohighlight">\(t\)</span> is the set of
+technologies included in <code class="docutils literal notranslate"><span class="pre">demand_share</span></code>. In general, <span class="math notranslate nohighlight">\(u\)</span> will start off as all
+technologies in the sector.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">search_space</span> <span class="o">=</span> <span class="n">initial_filter</span><span class="p">(</span>
+   <span class="n">agent</span><span class="p">,</span> <span class="n">demand_share</span><span class="p">,</span> <span class="n">technologies</span><span class="o">=</span><span class="n">technologies</span><span class="p">,</span> <span class="n">market</span><span class="o">=</span><span class="n">market</span>
+<span class="p">)</span>
+<span class="k">for</span> <span class="n">afilter</span> <span class="ow">in</span> <span class="n">filters</span><span class="p">:</span>
+   <span class="n">search_space</span> <span class="o">=</span> <span class="n">afilter</span><span class="p">(</span>
+      <span class="n">agent</span><span class="p">,</span> <span class="n">search_space</span><span class="p">,</span> <span class="n">technologies</span><span class="o">=</span><span class="n">technologies</span><span class="p">,</span> <span class="n">market</span><span class="o">=</span><span class="n">market</span>
+   <span class="p">)</span>
+<span class="k">return</span> <span class="n">search_space</span>
+</pre></div>
+</div>
+<p>The initial filter takes as input the share of the demand which the agent will fulfill,
+as well as the full market and the dataset characterising each technology. The demand
+share acts as an initial filter in the sense that it helps determine for which assets
+there is a demand. Subsequent filters take the search space as it exists, as well as the
+full market and the data characterising the technologies in the sector.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In all cases, if <code class="docutils literal notranslate"><span class="pre">initial_filter</span></code> is not provided, it defaults to
+<a class="reference internal" href="../developer_guide/api.html#muse.filters.initialize_from_technologies" title="muse.filters.initialize_from_technologies"><code class="xref py py-func docutils literal notranslate"><span class="pre">filters.initialize_from_technologies()</span></code></a>.</p>
+<p>The <em>retrofit</em> agents always finish with a call to
+<a class="reference internal" href="../developer_guide/api.html#muse.filters.with_asset_technology" title="muse.filters.with_asset_technology"><code class="xref py py-func docutils literal notranslate"><span class="pre">filters.with_asset_technology()</span></code></a> followed by a call to
+<a class="reference internal" href="../developer_guide/api.html#muse.filters.compress" title="muse.filters.compress"><code class="xref py py-func docutils literal notranslate"><span class="pre">filters.compress()</span></code></a>. <em>New</em> agents finish always finish with a call to
+<a class="reference internal" href="../developer_guide/api.html#muse.filters.compress" title="muse.filters.compress"><code class="xref py py-func docutils literal notranslate"><span class="pre">filters.compress()</span></code></a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <a class="reference internal" href="../user_guide/inputs/agents.html#inputs-agents"><span class="std std-ref">csv file defining agents</span></a> only allows for specifying
+three filters. These filters need not include the filters added in by default.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../developer_guide/api.html#module-muse.filters" title="muse.filters"><code class="xref py py-mod docutils literal notranslate"><span class="pre">filters</span></code></a>, <a class="reference internal" href="../developer_guide/api.html#muse.filters.factory" title="muse.filters.factory"><code class="xref py py-func docutils literal notranslate"><span class="pre">filters.factory()</span></code></a>,
+<a class="reference internal" href="../developer_guide/api.html#muse.filters.register_filter" title="muse.filters.register_filter"><code class="xref py py-func docutils literal notranslate"><span class="pre">filters.register_filter()</span></code></a>, <a class="reference internal" href="../developer_guide/api.html#muse.filters.register_initializer" title="muse.filters.register_initializer"><code class="xref py py-func docutils literal notranslate"><span class="pre">filters.register_initializer()</span></code></a></p>
+</div>
+</div>
+<div class="section" id="compute-replacement-technology-cost-matrix">
+<h2><a class="toc-backref" href="#id5">3. Compute replacement-technology cost-matrix</a><a class="headerlink" href="#compute-replacement-technology-cost-matrix" title="Permalink to this headline">¶</a></h2>
+<p>The cost matrix is defined as data array <span class="math notranslate nohighlight">\(\mathcal{C}_{t, u}^o\)</span>, where <span class="math notranslate nohighlight">\(t\)</span>
+is an index running over the technologies to be replaced, <span class="math notranslate nohighlight">\(u\)</span> runs over the
+potential replacement technologies, and <span class="math notranslate nohighlight">\(o\)</span> is an optional compound index which
+could run over timeslices, regions, or any other suitable dimension.</p>
+<p>It is computed in three steps:</p>
+<ol class="arabic simple">
+<li><p>Any number of objectives are computed for the enabled replacement technologies the
+search space</p></li>
+<li><p>The objectives are combined via a decision method</p></li>
+<li><p>The resulting scaling objectives are <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.rank.html&gt;">ranked</a> along the
+<span class="math notranslate nohighlight">\(u\)</span> dimension</p></li>
+</ol>
+<p>Objectives are any function registered with
+<a class="reference internal" href="../developer_guide/api.html#muse.objectives.register_objective" title="muse.objectives.register_objective"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;register_objective</span></code></a>. They take as input the
+agent (which should not be modified during the call), the search space, the market and
+the dataset of technology characteristics. They must return an array
+<span class="math notranslate nohighlight">\(\mathcal{O}_{t, u}^g\)</span> where <span class="math notranslate nohighlight">\(g\)</span> is an optional composite index.</p>
+<p>The decision method is any function registered with
+<a class="reference internal" href="../developer_guide/api.html#muse.decisions.register_decision" title="muse.decisions.register_decision"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;register_decision</span></code></a>. It takes as input an agent, a
+dataset collecting the datarrays computed from the objective functions, and some
+parameters, such as whether weights or whether an objective should be minimized or
+maximized. The function should return a cost matrix, as defined above.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is the users responsibility that any extra dimension (e.g. <span class="math notranslate nohighlight">\(o\)</span> and
+<span class="math notranslate nohighlight">\(g\)</span>) are consistent and meaningful throughout the calculation, from objectives
+to decision to investment below.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The objective and decision method can be defined to accept any number of keyword
+arguments parameterizing their behaviour. However, the <a class="reference internal" href="../user_guide/inputs/agents.html#inputs-agents"><span class="std std-ref">standard csv input
+file</span></a> does not currently allow to specify them.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../developer_guide/api.html#module-muse.objectives" title="muse.objectives"><code class="xref py py-mod docutils literal notranslate"><span class="pre">objectives</span></code></a>, <a class="reference internal" href="../developer_guide/api.html#muse.objectives.register_objective" title="muse.objectives.register_objective"><code class="xref py py-func docutils literal notranslate"><span class="pre">objectives.register_objective()</span></code></a>,
+<a class="reference internal" href="../developer_guide/api.html#module-muse.decisions" title="muse.decisions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">decisions</span></code></a>, <a class="reference internal" href="../developer_guide/api.html#muse.decisions.register_decision" title="muse.decisions.register_decision"><code class="xref py py-func docutils literal notranslate"><span class="pre">decisions.register_decision()</span></code></a></p>
+</div>
+</div>
+<div class="section" id="compute-investment-constraints">
+<h2><a class="toc-backref" href="#id6">4. Compute investment constraints</a><a class="headerlink" href="#compute-investment-constraints" title="Permalink to this headline">¶</a></h2>
+<p>Currently, there is only one kind of constraint, implementing maximum capacity
+expansion. It is a constraint imposed separately on each agent limiting how much they
+can invest into each technology. Let <span class="math notranslate nohighlight">\(\Delta\mathcal{A}^{i,r}_t\)</span> bet the future
+investments. Then the constraints are:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\Gamma_t^{i, r} \geq \Delta\mathcal{A}^{i,r}_t\\\Delta\mathcal{A}^{i,r}_t \geq 0\end{aligned}\end{align} \]</div>
+<p><span class="math notranslate nohighlight">\(\Gamma_t^{i, r}\)</span> is an upper bound on investments for a given agent, replacement
+technology <span class="math notranslate nohighlight">\(r\)</span> and current technology <span class="math notranslate nohighlight">\(t\)</span>. It is computed as a function of
+the current asset profile in <a class="reference internal" href="../developer_guide/api.html#muse.agent.Agent.max_capacity_expansion" title="muse.agent.Agent.max_capacity_expansion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">max_capacity_expansion()</span></code></a>. The second
+constraints imposes that investments cannot be negative (e.g. they can only add to the
+agent’s assets, and never remove).</p>
+</div>
+<div class="section" id="determine-new-investments">
+<h2><a class="toc-backref" href="#id7">5. Determine new investments</a><a class="headerlink" href="#determine-new-investments" title="Permalink to this headline">¶</a></h2>
+<p>The objective of this step is to satisfy the market demand for products
+Given the maximum production for each replacement technology <span class="math notranslate nohighlight">\(P_u\)</span>, the demand for
+a product <span class="math notranslate nohighlight">\(\mathcal{D}_{c, s}^r\)</span>, the search space determined above,
+<span class="math notranslate nohighlight">\(\mathcal{S}_{t, u}\)</span>, and the maximum capacity constraints <span class="math notranslate nohighlight">\(\Gamma_t^{i,
+r}\)</span>, we want to match new investments to the demand.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../developer_guide/api.html#muse.demand_matching.demand_matching" title="muse.demand_matching.demand_matching"><code class="xref py py-func docutils literal notranslate"><span class="pre">muse.demand_matching.demand_matching()</span></code></a></p>
+</div>
+</div>
+<div class="section" id="fold-new-investments-into-assets">
+<h2><a class="toc-backref" href="#id8">6. Fold new investments into assets</a><a class="headerlink" href="#fold-new-investments-into-assets" title="Permalink to this headline">¶</a></h2>
+<p>Given a set of assets representing new investments for the agents, it still needs to be
+decided how they should be merged into the existing assets. Currently, <em>retrofit</em> agents
+will merge old and new assets, whereas <em>new</em> agents will simply replace the old with the
+new.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <a class="reference internal" href="../user_guide/inputs/agents.html#inputs-agents"><span class="std std-ref">csv file defining agents</span></a> does not allow for modifying
+the asset-merge operation.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../developer_guide/api.html#muse.hooks.register_final_asset_transform" title="muse.hooks.register_final_asset_transform"><code class="xref py py-func docutils literal notranslate"><span class="pre">hooks.register_final_asset_transform()</span></code></a>, <a class="reference internal" href="../developer_guide/api.html#muse.hooks.merge_assets" title="muse.hooks.merge_assets"><code class="xref py py-func docutils literal notranslate"><span class="pre">hooks.merge_assets()</span></code></a>,
+<a class="reference internal" href="../developer_guide/api.html#muse.hooks.new_assets_only" title="muse.hooks.new_assets_only"><code class="xref py py-func docutils literal notranslate"><span class="pre">hooks.new_assets_only()</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="outputs">
+<h2><a class="toc-backref" href="#id9">Outputs</a><a class="headerlink" href="#outputs" title="Permalink to this headline">¶</a></h2>
+<p>No direct output. However, <a class="reference internal" href="../developer_guide/api.html#muse.agent.AgentBase.assets" title="muse.agent.AgentBase.assets"><code class="xref py py-attr docutils literal notranslate"><span class="pre">agent.AgentBase.assets</span></code></a> is likely to have been
+modified, reflecting new investments.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Agents</a><ul>
+<li><a class="reference internal" href="#inputs">Inputs</a></li>
+<li><a class="reference internal" href="#initial-housekeeping">1. Initial housekeeping</a></li>
+<li><a class="reference internal" href="#filter-search-space">2. Filter search space</a></li>
+<li><a class="reference internal" href="#compute-replacement-technology-cost-matrix">3. Compute replacement-technology cost-matrix</a></li>
+<li><a class="reference internal" href="#compute-investment-constraints">4. Compute investment constraints</a></li>
+<li><a class="reference internal" href="#determine-new-investments">5. Determine new investments</a></li>
+<li><a class="reference internal" href="#fold-new-investments-into-assets">6. Fold new investments into assets</a></li>
+<li><a class="reference internal" href="#outputs">Outputs</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sectors.html"
+                        title="previous chapter">Sectors</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../user_guide/index.html"
+                        title="next chapter">User Guide</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/model/agents.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../user_guide/index.html" title="User Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sectors.html" title="Sectors"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MUSE 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Model Description</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Sustainable Gas Institute.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

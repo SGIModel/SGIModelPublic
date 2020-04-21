@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Running the demo simulation &#8212; MUSE 0.6 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MUSE input files" href="inputs.html" />
+    <link rel="prev" title="User Guide" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="inputs.html" title="MUSE input files"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="User Guide"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MUSE 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User Guide</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="running-the-demo-simulation">
+<h1>Running the demo simulation<a class="headerlink" href="#running-the-demo-simulation" title="Permalink to this headline">¶</a></h1>
+<p>All the input files for the demonstration simulation can be found in <strong>[INSERT LINK HERE]</strong>. Click
+on the link and expand the zip file. Assuming the installation process worked, then
+running a simulation should be as simple as opening an anaconda prompt and navigating to
+the input files. For instance, if the files were unzipped on the desktop:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>python -m muse settings.toml
+</pre></div>
+</div>
+<p>A description of the input file can be found in <a class="reference internal" href="inputs.html#input-files"><span class="std std-ref">MUSE input files</span></a>.</p>
+<p>There are a few standard models available directly with MUSE. They can be run as
+follows:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>python -m muse --model default
+</pre></div>
+</div>
+<p>The output will be located in a sub-folder <code class="docutils literal notranslate"><span class="pre">Results</span></code> of the folder from which the
+command is run. There may be other models available, other than default. To list them,
+do:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>python -m muse --help
+</pre></div>
+</div>
+<p>The full model can be copied to a path of your choosing with</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span>python -m muse --model default --copy XXX
+</pre></div>
+</div>
+<p>The models are also available directly in python. They can be instanciated and run as
+follows:</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">muse</span> <span class="kn">import</span> <span class="n">examples</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">User Guide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="inputs.html"
+                        title="next chapter">MUSE input files</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user_guide/quick-start.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="inputs.html" title="MUSE input files"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="User Guide"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MUSE 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >User Guide</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Sustainable Gas Institute.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

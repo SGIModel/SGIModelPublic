@@ -1,0 +1,1499 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Extending the Generalized Sector &#8212; MUSE 0.6 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="API" href="../api.html" />
+    <link rel="prev" title="Generalized Sector Overview" href="GeneralizedSectorOverview.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../api.html" title="API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="GeneralizedSectorOverview.html" title="Generalized Sector Overview"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MUSE 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../tutorial.html" accesskey="U">Tutorials</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container,
+div.nbinput.container div.prompt,
+div.nbinput.container div.input_area,
+div.nbinput.container div[class*=highlight],
+div.nbinput.container div[class*=highlight] pre,
+div.nboutput.container,
+div.nboutput.container div.prompt,
+div.nboutput.container div.output_area,
+div.nboutput.container div[class*=highlight],
+div.nboutput.container div[class*=highlight] pre {
+    background: none;
+    border: none;
+    padding: 0 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    min-width: 4.5ex;
+    padding-top: 0.3rem;
+    padding-right: 0.3rem;
+    text-align: right;
+    flex: 0;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    background: #f5f5f5;
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 0.3rem;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+</style>
+<div class="section" id="Extending-the-Generalized-Sector">
+<h1>Extending the Generalized Sector<a class="headerlink" href="#Extending-the-Generalized-Sector" title="Permalink to this headline">¶</a></h1>
+<p>Table of Contents:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="#Extending-outputs">Extending outputs</a></p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="#Simple-output-extension">Simple output extension</a></p></li>
+<li><p><a class="reference external" href="#Adding-TOML-parameters-to-the-outputs">Adding TOML parameters to the outputs</a></p></li>
+</ol>
+</li>
+<li><p><a class="reference external" href="#Modeling-early-obsolescence">Modeling early obsolescence</a></p></li>
+<li><p><a class="reference external" href="#Where-to-store-new-functionality">Where to store new functionality</a></p></li>
+</ol>
+<p>One key feature of the generalized sector’s implementation is that it should be easy to extend. As such, most the steps shown in <a class="reference internal" href="GeneralizedSectorOverview.html"><span class="doc">Generalized Sector Overview</span></a> can be made to run custom python functions, as long as these inputs and output of the function follow a standard specific to each step. We will look at a few here. Below is a list of possible hooks, referenced by their implementation in the MUSE model itself</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">register_interaction_net</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.interactions</span></code>: a list of lists of agents that do interact together.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_agent_interaction</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.interactions</span></code>: Given a list of interacting agents, perform the interaction itself.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_production</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.production</span></code>: A method to compute the production from a sector, given the demand and the capacity.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_initial_asset_transform</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.hooks</span></code>: Prior to investing, within an agent, allows any kind of transformation to be applied to the assets.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_final_asset_transform</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.hooks</span></code>: After computing investment, within an agent, sets the assets that will be owned the agents.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_demand_share</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.demand_share</span></code>: During agent investment, share of the demand that an agent will try and satisfy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_filter</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.filters</span></code>: During agent investment, a filter to remove technologies from consideration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_objective</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.objectives</span></code>: During agent investment, a quantity defining preference between one or another technology during investment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_decision</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.decisions</span></code>: During agent investment, a transform to aggregate multiple objectives into a single one, e.g. via a weighted sum.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_investment</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.investment</span></code>: During agent investment, matches the demand to future investment using the decision metric above.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_output_quantity</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.outputs</span></code>: A quantity to output for postmortem analysis.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_output_sink</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.outputs</span></code>: A <em>place</em> where to store an output quantity, e.g. a file with a given format, a database on premise or on the cloud, etc…</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_carbon_budget_fitter</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.carbon_budget</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_carbon_budget_method</span></code> in <code class="docutils literal notranslate"><span class="pre">muse.carbon_budget</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">register_sector</span></code>: registers a function that can create a sector from a muse configuration object.</p></li>
+</ul>
+<div class="section" id="Extending-outputs">
+<h2>Extending outputs<a class="headerlink" href="#Extending-outputs" title="Permalink to this headline">¶</a></h2>
+<p>MUSE can be told to save quantities for post-mortem analysis. There are actually two steps to this process. First, we want to compute the quantity of interest. Second, we want to store in a <strong>sink</strong>, somewhere. Generally, we can mix and match between quantities and sinks; for instance we can compute the capacity and save it as csv file, or an netcdf file.</p>
+<div class="section" id="Simple-output-extension">
+<h3>Simple output extension<a class="headerlink" href="#Simple-output-extension" title="Permalink to this headline">¶</a></h3>
+<p>To demonstrate this, we will compute a new quantity of (little) interest, and then save it as is to a text file:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">xarray</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataArray</span>
+<span class="kn">from</span> <span class="nn">muse.outputs</span> <span class="kn">import</span> <span class="n">register_output_quantity</span>
+
+<span class="nd">@register_output_quantity</span>
+<span class="k">def</span> <span class="nf">bracket</span><span class="p">(</span>
+    <span class="n">capacity</span><span class="p">:</span> <span class="n">DataArray</span><span class="p">,</span>
+    <span class="n">market</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+    <span class="n">technologies</span><span class="p">:</span> <span class="n">Dataset</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataArray</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">logical_and</span>
+    <span class="k">return</span> <span class="n">logical_and</span><span class="p">(</span><span class="n">capacity</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">,</span> <span class="n">capacity</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The function we wrote takes three arguments. These are mandatory <strong>for this hook</strong>, the hook which allows compute quantities for post-mortem analysis. We will see shortly other hooks require other arguments. The function outputs the quantity that we want to save.</p>
+<p>Importantly, the function is <em>decorated</em>: on the line above it sits the decorator <code class="docutils literal notranslate"><span class="pre">&#64;register_output_quantity</span></code>. This decorator ensures the new quantity will be addressable in the TOML file.</p>
+<p>Now we can write a sink. In this case, the sink will simply dump the quantity it is given to a file, with a small message:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Text</span>
+<span class="kn">from</span> <span class="nn">muse.outputs</span> <span class="kn">import</span> <span class="n">register_output_sink</span><span class="p">,</span> <span class="n">sink_to_file</span>
+
+<span class="nd">@register_output_sink</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;txt&quot;</span><span class="p">)</span>
+<span class="nd">@sink_to_file</span><span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">text_dump</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">Text</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+    <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Hello, world!</span><span class="se">\n\n</span><span class="si">{data}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>There code above makes use of two decorators. The first one we expect, <code class="docutils literal notranslate"><span class="pre">&#64;register_output_sink</span></code>. It registers the function with MUSE, so that the sink is addressable from a TOML file. The second one, <code class="docutils literal notranslate"><span class="pre">&#64;sink_to_file</span></code>, is optional. It adds to sinks that are files some nice-to-have features, such as a way to specify filenames and check that files cannot be overwritten, unless explicitly allowed to.</p>
+<p>Now we want to modify the input file to actually use this output type. Specifically, we add a section to the output table:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[sectors.commercial.outputs]]</span>
+<span class="n">quantity</span> <span class="o">=</span> <span class="s">&quot;bracket&quot;</span>
+<span class="n">sink</span> <span class="o">=</span> <span class="s">&quot;txt&quot;</span>
+<span class="n">filename</span> <span class="o">=</span> <span class="s">&quot;{cwd}/{default_output_dir}/{Sector}{Quantity}{year}{suffix}&quot;</span>
+</pre></div>
+</div>
+<p>The last line above allows us to specify the name of the file. We could also use <code class="docutils literal notranslate"><span class="pre">sector</span></code> (no caps) and <code class="docutils literal notranslate"><span class="pre">quantity</span></code>.</p>
+<p>There can be as many sections of this kind as we want in the TOML file, allowing for multiple outputs.</p>
+<p>In the following, we first copy the default model provided with muse to a local subfolder called “model”. Then we read the <code class="docutils literal notranslate"><span class="pre">settings.toml</span></code> file and modify it using python. You may prefer to modify the <code class="docutils literal notranslate"><span class="pre">settings.toml</span></code> file using your favorite text editor. However, modifying the file programmatically allows us to routinely run this notebook as part of MUSE’s test suite and check that the tutorial it is still up to date.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">toml</span> <span class="kn">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">dump</span>
+<span class="kn">from</span> <span class="nn">muse</span> <span class="kn">import</span> <span class="n">examples</span>
+
+<span class="n">model_path</span> <span class="o">=</span> <span class="n">examples</span><span class="o">.</span><span class="n">copy_model</span><span class="p">(</span><span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">settings</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;settings.toml&quot;</span><span class="p">)</span>
+<span class="n">new_output</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;bracket&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sink&quot;</span><span class="p">:</span>  <span class="s2">&quot;txt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;overwrite&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{cwd}</span><span class="s2">/</span><span class="si">{default_output_dir}</span><span class="s2">/</span><span class="si">{Sector}{Quantity}{year}{suffix}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">settings</span><span class="p">[</span><span class="s2">&quot;sectors&quot;</span><span class="p">][</span><span class="s2">&quot;residential&quot;</span><span class="p">][</span><span class="s2">&quot;outputs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_output</span><span class="p">)</span>
+<span class="n">dump</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;modified_settings.toml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">))</span>
+<span class="n">settings</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;time_framework&#39;: [2020, 2025, 2030, 2035, 2040, 2045, 2050],
+ &#39;foresight&#39;: 5,
+ &#39;regions&#39;: [&#39;USA&#39;],
+ &#39;interest_rate&#39;: 0.1,
+ &#39;interpolation_mode&#39;: &#39;Active&#39;,
+ &#39;log_level&#39;: &#39;info&#39;,
+ &#39;equilibrium_variable&#39;: &#39;demand&#39;,
+ &#39;maximum_iterations&#39;: 100,
+ &#39;tolerance&#39;: 0.1,
+ &#39;tolerance_unmet_demand&#39;: -0.1,
+ &#39;carbon_budget_control&#39;: {&#39;budget&#39;: []},
+ &#39;global_input_files&#39;: {&#39;projections&#39;: &#39;{path}/input/Projections.csv&#39;,
+  &#39;global_commodities&#39;: &#39;{path}/input/GlobalCommodities.csv&#39;},
+ &#39;sectors&#39;: {&#39;residential&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 1,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/residential/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/residential/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/residential/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/residential/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: &#39;capacity&#39;,
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True},
+    {&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: {&#39;name&#39;: &#39;supply&#39;,
+      &#39;sum_over&#39;: &#39;timeslice&#39;,
+      &#39;drop&#39;: [&#39;comm_usage&#39;, &#39;units_prices&#39;]},
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True},
+    {&#39;quantity&#39;: &#39;bracket&#39;,
+     &#39;sink&#39;: &#39;txt&#39;,
+     &#39;overwrite&#39;: True,
+     &#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}{Quantity}{year}{suffix}&#39;}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}]},
+  &#39;power&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 2,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/power/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/power/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/power/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/power/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: &#39;capacity&#39;,
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}]},
+  &#39;gas&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 3,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/gas/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/gas/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/gas/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/gas/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: &#39;capacity&#39;,
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}]},
+  &#39;residential_presets&#39;: {&#39;type&#39;: &#39;presets&#39;,
+   &#39;priority&#39;: 0,
+   &#39;consumption_path&#39;: &#39;{path}/technodata/preset/*Consumption.csv&#39;}},
+ &#39;timeslices&#39;: {&#39;all-year&#39;: {&#39;all-week&#39;: {&#39;night&#39;: 1460,
+    &#39;morning&#39;: 1460,
+    &#39;afternoon&#39;: 1460,
+    &#39;early-peak&#39;: 1460,
+    &#39;late-peak&#39;: 1460,
+    &#39;evening&#39;: 1460}},
+  &#39;level_names&#39;: [&#39;month&#39;, &#39;day&#39;, &#39;hour&#39;]}}
+</pre></div></div>
+</div>
+<p>We can now try and run the simulation. There are two ways to do this. From the command-line, we can do <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">muse</span> <span class="pre">data/commercial/settings2.toml</span></code> (note that slashes may be the other way on Windows). Directly from the notebook, we can do:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">muse.mca</span> <span class="kn">import</span> <span class="n">MCA</span>
+
+<span class="n">mca</span> <span class="o">=</span> <span class="n">MCA</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;modified_settings.toml&quot;</span><span class="p">)</span>
+<span class="n">mca</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+-- 2020-04-17 12:15:24 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2020.
+
+-- 2020-04-17 12:15:30 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2020.
+
+-- 2020-04-17 12:15:36 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 12:15:36 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 12:15:41 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 12:15:41 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 12:15:44 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2030.
+
+-- 2020-04-17 12:15:45 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 12:15:45 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 12:15:48 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2030.
+
+-- 2020-04-17 12:15:49 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 12:15:49 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 12:15:52 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2035.
+
+-- 2020-04-17 12:15:52 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 12:15:52 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 12:15:55 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2035.
+
+-- 2020-04-17 12:15:56 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 12:15:56 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 12:15:59 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2040.
+
+-- 2020-04-17 12:16:00 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 12:16:00 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 12:16:03 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2040.
+
+-- 2020-04-17 12:16:04 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 12:16:04 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 12:16:08 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 12:16:08 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 12:16:13 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 12:16:13 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 12:16:14 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of residential sector in year 2050.
+
+-- 2020-04-17 12:16:15 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of power sector in year 2050.
+
+-- 2020-04-17 12:16:16 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2050.
+
+-- 2020-04-17 12:16:16 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2050.
+
+-- 2020-04-17 12:16:17 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of residential sector in year 2050.
+
+-- 2020-04-17 12:16:18 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of power sector in year 2050.
+
+-- 2020-04-17 12:16:20 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2050.
+
+-- 2020-04-17 12:16:20 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2050.
+
+</pre></div></div>
+</div>
+<p>We can check that running the simulation has created the files we expect:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">all_txt_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">Path</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;Results&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;Residential*.txt&quot;</span><span class="p">))</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_txt_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
+<span class="k">assert</span> <span class="s2">&quot;Hello, world!&quot;</span> <span class="ow">in</span> <span class="n">all_txt_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+<span class="n">all_txt_files</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[PosixPath(&#39;Results/ResidentialBracket2020.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2025.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2030.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2035.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2040.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2045.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2050.txt&#39;)]
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Adding-TOML-parameters-to-the-outputs">
+<h3>Adding TOML parameters to the outputs<a class="headerlink" href="#Adding-TOML-parameters-to-the-outputs" title="Permalink to this headline">¶</a></h3>
+<p>The bracket quantity we are computing would be (somewhat) more useful if we could specify the bracket range straight from the TOML file. Similarly, the “hello world” message in the sink could also do with being parameterized. Not all hooks are this flexible (for historical reasons, rather than any intrinsic difficulty). However, for outputs, we can do this as follows:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="nd">@register_output_quantity</span><span class="p">(</span><span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">bracket</span><span class="p">(</span>
+    <span class="n">capacity</span><span class="p">:</span> <span class="n">DataArray</span><span class="p">,</span>
+    <span class="n">market</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+    <span class="n">technologies</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+    <span class="n">lower</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">upper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataArray</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">logical_and</span>
+    <span class="k">return</span> <span class="n">logical_and</span><span class="p">(</span><span class="n">capacity</span> <span class="o">&gt;</span> <span class="n">lower</span><span class="p">,</span> <span class="n">capacity</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">)</span>
+
+
+<span class="nd">@register_output_sink</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;txt&quot;</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nd">@sink_to_file</span><span class="p">(</span><span class="s2">&quot;.txt&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">text_dump</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="n">Text</span><span class="p">,</span>
+    <span class="n">msg</span> <span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Text</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Hello, world!&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+    <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{msg}</span><span class="se">\n\n</span><span class="si">{data}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We simply added parameters as keyword arguments to the functions.</p>
+<p>Note: The <code class="docutils literal notranslate"><span class="pre">overwrite</span></code> argument allows us to overwrite previously defined registered functions. This is useful in a notebook such as this. But it should not be used in general. If <code class="docutils literal notranslate"><span class="pre">overwrite</span></code> were false, then the code would issue a warning and it would leave the TOML to refer to the original functions at the beginning of the notebook. This is useful when using custom modules.</p>
+<p>Now we can modify the output section to take additional arguments:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[sectors.commercial.outputs]]</span>
+<span class="n">quantity</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;bracket&quot;</span>
+<span class="n">quantity</span><span class="p">.</span><span class="n">upper</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">quantity</span><span class="p">.</span><span class="n">lower</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">sink</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;txt&quot;</span>
+<span class="n">sink</span><span class="p">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s">&quot;{cwd}/{default_output_dir}/{Sector}{Quantity}{year}{suffix}&quot;</span>
+<span class="n">sink</span><span class="p">.</span><span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Hello, you!&quot;</span>
+<span class="n">sink</span><span class="p">.</span><span class="n">overwrite</span> <span class="o">=</span> <span class="n">True</span>
+</pre></div>
+</div>
+<p>Now, both <code class="docutils literal notranslate"><span class="pre">sink</span></code> and <code class="docutils literal notranslate"><span class="pre">quantity</span></code> are dictionaries which can take any number of arguments. Previously, we were using a shorthand for convenience.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">toml</span> <span class="kn">import</span> <span class="n">load</span><span class="p">,</span> <span class="n">dump</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">settings</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;settings.toml&quot;</span><span class="p">)</span>
+<span class="n">settings</span><span class="p">[</span><span class="s2">&quot;sectors&quot;</span><span class="p">][</span><span class="s2">&quot;residential&quot;</span><span class="p">][</span><span class="s2">&quot;outputs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;bracket&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;upper&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;sink&quot;</span><span class="p">:</span>  <span class="p">{</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;txt&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;filename&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{cwd}</span><span class="s2">/</span><span class="si">{default_output_dir}</span><span class="s2">/</span><span class="si">{Sector}{Quantity}{year}{suffix}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;msg&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello, you!&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;overwrite&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+<span class="n">dump</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;modified_settings.toml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">))</span>
+<span class="n">settings</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;time_framework&#39;: [2020, 2025, 2030, 2035, 2040, 2045, 2050],
+ &#39;foresight&#39;: 5,
+ &#39;regions&#39;: [&#39;USA&#39;],
+ &#39;interest_rate&#39;: 0.1,
+ &#39;interpolation_mode&#39;: &#39;Active&#39;,
+ &#39;log_level&#39;: &#39;info&#39;,
+ &#39;equilibrium_variable&#39;: &#39;demand&#39;,
+ &#39;maximum_iterations&#39;: 100,
+ &#39;tolerance&#39;: 0.1,
+ &#39;tolerance_unmet_demand&#39;: -0.1,
+ &#39;carbon_budget_control&#39;: {&#39;budget&#39;: []},
+ &#39;global_input_files&#39;: {&#39;projections&#39;: &#39;{path}/input/Projections.csv&#39;,
+  &#39;global_commodities&#39;: &#39;{path}/input/GlobalCommodities.csv&#39;},
+ &#39;sectors&#39;: {&#39;residential&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 1,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/residential/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/residential/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/residential/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/residential/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;quantity&#39;: {&#39;name&#39;: &#39;bracket&#39;, &#39;upper&#39;: 10, &#39;lower&#39;: 1},
+     &#39;sink&#39;: {&#39;name&#39;: &#39;txt&#39;,
+      &#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}{Quantity}{year}{suffix}&#39;,
+      &#39;msg&#39;: &#39;Hello, you!&#39;,
+      &#39;overwrite&#39;: True}}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}]},
+  &#39;power&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 2,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/power/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/power/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/power/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/power/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: &#39;capacity&#39;,
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}]},
+  &#39;gas&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 3,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/gas/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/gas/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/gas/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/gas/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: &#39;capacity&#39;,
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}]},
+  &#39;residential_presets&#39;: {&#39;type&#39;: &#39;presets&#39;,
+   &#39;priority&#39;: 0,
+   &#39;consumption_path&#39;: &#39;{path}/technodata/preset/*Consumption.csv&#39;}},
+ &#39;timeslices&#39;: {&#39;all-year&#39;: {&#39;all-week&#39;: {&#39;night&#39;: 1460,
+    &#39;morning&#39;: 1460,
+    &#39;afternoon&#39;: 1460,
+    &#39;early-peak&#39;: 1460,
+    &#39;late-peak&#39;: 1460,
+    &#39;evening&#39;: 1460}},
+  &#39;level_names&#39;: [&#39;month&#39;, &#39;day&#39;, &#39;hour&#39;]}}
+</pre></div></div>
+</div>
+<p>We then run the simulation again:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">muse.mca</span> <span class="kn">import</span> <span class="n">MCA</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;muse&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">mca</span> <span class="o">=</span> <span class="n">MCA</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;modified_settings.toml&quot;</span><span class="p">)</span>
+<span class="n">mca</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+-- 2020-04-17 12:16:25 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2020.
+
+-- 2020-04-17 12:16:27 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 12:16:29 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2020.
+
+-- 2020-04-17 12:16:31 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 12:16:35 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 12:16:35 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 12:16:36 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 12:16:40 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 12:16:40 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 12:16:40 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 12:16:43 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2030.
+
+-- 2020-04-17 12:16:43 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 12:16:43 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 12:16:44 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 12:16:47 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2030.
+
+-- 2020-04-17 13:22:11 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 13:22:11 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 13:22:12 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:22:25 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2035.
+
+-- 2020-04-17 13:22:26 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 13:22:26 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 13:22:26 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:22:30 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2035.
+
+-- 2020-04-17 13:22:31 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 13:22:31 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 13:22:31 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:22:34 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2040.
+
+-- 2020-04-17 13:22:35 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 13:22:35 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 13:22:35 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:22:39 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2040.
+
+-- 2020-04-17 13:22:39 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 13:22:39 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 13:22:40 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:22:44 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 13:22:44 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 13:22:45 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:22:50 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 13:22:50 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 13:22:50 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:22:51 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of residential sector in year 2050.
+
+-- 2020-04-17 13:22:52 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of power sector in year 2050.
+
+-- 2020-04-17 13:22:54 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2050.
+
+-- 2020-04-17 13:22:54 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2050.
+
+-- 2020-04-17 13:22:54 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:22:55 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of residential sector in year 2050.
+
+-- 2020-04-17 13:22:56 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of power sector in year 2050.
+
+-- 2020-04-17 13:22:58 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2050.
+
+-- 2020-04-17 13:22:58 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2050.
+
+-- 2020-04-17 13:22:59 - muse.mca - WARNING
+Check growth constraints for wind.
+
+</pre></div></div>
+</div>
+<p>And we can check the parameters were used accordingly:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">all_txt_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">Path</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;Results&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;Residential*.txt&quot;</span><span class="p">))</span>
+<span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_txt_files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span>
+<span class="k">assert</span> <span class="s2">&quot;Hello, you!&quot;</span> <span class="ow">in</span> <span class="n">all_txt_files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+<span class="n">all_txt_files</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[PosixPath(&#39;Results/ResidentialBracket2020.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2025.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2030.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2035.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2040.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2045.txt&#39;),
+ PosixPath(&#39;Results/ResidentialBracket2050.txt&#39;)]
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Modeling-early-obsolescence">
+<h2>Modeling early obsolescence<a class="headerlink" href="#Modeling-early-obsolescence" title="Permalink to this headline">¶</a></h2>
+<p>The objective is to incite agents to replace their assets before they reach end of life. To do this, we will create a depressed <code class="docutils literal notranslate"><span class="pre">production</span></code> function. The production will use existing methods but depress the result via a factor that can be controlled by the user from the toml:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">muse.production</span> <span class="kn">import</span> <span class="n">register_production</span>
+
+<span class="nd">@register_production</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;depressed shares&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">depressed_capacity_production</span><span class="p">(</span>
+    <span class="n">market</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+    <span class="n">capacity</span><span class="p">:</span> <span class="n">DataArray</span><span class="p">,</span>
+    <span class="n">technologies</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+    <span class="n">factor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataArray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Comfort for input techs.&quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">muse.production</span> <span class="kn">import</span> <span class="n">maximum_production</span>
+    <span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+
+    <span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;muse.production&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">critical</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Production is depressed by </span><span class="si">{factor}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">maximum_production</span><span class="p">(</span><span class="n">market</span><span class="p">,</span> <span class="n">capacity</span><span class="p">,</span> <span class="n">technologies</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>The function itself is straightforward. It takes as input the market (<code class="docutils literal notranslate"><span class="pre">consumption</span></code>, <code class="docutils literal notranslate"><span class="pre">supply</span></code>, <code class="docutils literal notranslate"><span class="pre">prices</span></code>) as received from the MCA, the <code class="docutils literal notranslate"><span class="pre">capacity</span></code> aggregated across the sector, and the dataset describing the technologies. We as argument the factor by which to artificially depress the production.</p>
+<p>This function must hooked just in the right place. It should intervene only when computing the demand against which agents invest. It should not be used when computing the actual amount of commodities produced by a sector and returned to the MCA.</p>
+<p>Fortunately, sectors have access to two separate hooks for this:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[sectors.commercial]</span>
+<span class="n">supply</span> <span class="o">=</span> <span class="s">&#39;shares&#39;</span>
+<span class="n">production</span> <span class="o">=</span> <span class="s">&#39;shares&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">production</span></code> defines the method to compute the demand ahead of investing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">supply</span></code> defines the method to compute the <code class="docutils literal notranslate"><span class="pre">consumption</span></code> and <code class="docutils literal notranslate"><span class="pre">supply</span></code> returned by the sector</p></li>
+</ul>
+<p>In order to use our newly created functionality, we will modify the settings to read:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[sectors.commercial]</span>
+<span class="n">supply</span> <span class="o">=</span> <span class="s">&#39;shares&#39;</span>
+<span class="n">production</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;depressed shares&#39;</span>
+<span class="n">production</span><span class="p">.</span><span class="n">factor</span> <span class="o">=</span> <span class="mf">0.9</span>
+</pre></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">settings</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;settings.toml&quot;</span><span class="p">)</span>
+<span class="n">settings</span><span class="p">[</span><span class="s2">&quot;sectors&quot;</span><span class="p">][</span><span class="s2">&quot;residential&quot;</span><span class="p">][</span><span class="s2">&quot;production&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;depressed shares&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;factor&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">dump</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;modified_settings.toml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">))</span>
+<span class="n">settings</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;time_framework&#39;: [2020, 2025, 2030, 2035, 2040, 2045, 2050],
+ &#39;foresight&#39;: 5,
+ &#39;regions&#39;: [&#39;USA&#39;],
+ &#39;interest_rate&#39;: 0.1,
+ &#39;interpolation_mode&#39;: &#39;Active&#39;,
+ &#39;log_level&#39;: &#39;info&#39;,
+ &#39;equilibrium_variable&#39;: &#39;demand&#39;,
+ &#39;maximum_iterations&#39;: 100,
+ &#39;tolerance&#39;: 0.1,
+ &#39;tolerance_unmet_demand&#39;: -0.1,
+ &#39;carbon_budget_control&#39;: {&#39;budget&#39;: []},
+ &#39;global_input_files&#39;: {&#39;projections&#39;: &#39;{path}/input/Projections.csv&#39;,
+  &#39;global_commodities&#39;: &#39;{path}/input/GlobalCommodities.csv&#39;},
+ &#39;sectors&#39;: {&#39;residential&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 1,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/residential/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/residential/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/residential/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/residential/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: &#39;capacity&#39;,
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True},
+    {&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: {&#39;name&#39;: &#39;supply&#39;,
+      &#39;sum_over&#39;: &#39;timeslice&#39;,
+      &#39;drop&#39;: [&#39;comm_usage&#39;, &#39;units_prices&#39;]},
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}],
+   &#39;production&#39;: {&#39;name&#39;: &#39;depressed shares&#39;, &#39;factor&#39;: 0.9}},
+  &#39;power&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 2,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/power/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/power/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/power/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/power/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: &#39;capacity&#39;,
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}]},
+  &#39;gas&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 3,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/gas/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/gas/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/gas/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/gas/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: &#39;capacity&#39;,
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}]},
+  &#39;residential_presets&#39;: {&#39;type&#39;: &#39;presets&#39;,
+   &#39;priority&#39;: 0,
+   &#39;consumption_path&#39;: &#39;{path}/technodata/preset/*Consumption.csv&#39;}},
+ &#39;timeslices&#39;: {&#39;all-year&#39;: {&#39;all-week&#39;: {&#39;night&#39;: 1460,
+    &#39;morning&#39;: 1460,
+    &#39;afternoon&#39;: 1460,
+    &#39;early-peak&#39;: 1460,
+    &#39;late-peak&#39;: 1460,
+    &#39;evening&#39;: 1460}},
+  &#39;level_names&#39;: [&#39;month&#39;, &#39;day&#39;, &#39;hour&#39;]}}
+</pre></div></div>
+</div>
+<p>Finally, we can run the simulation and check in the log that our function did run:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">mca</span> <span class="o">=</span> <span class="n">MCA</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;modified_settings.toml&quot;</span><span class="p">)</span>
+<span class="n">mca</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+-- 2020-04-17 13:23:03 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2020.
+
+-- 2020-04-17 13:23:05 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:08 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2020.
+
+-- 2020-04-17 13:23:11 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:15 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 13:23:15 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 13:23:15 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:20 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 13:23:20 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2025.
+
+-- 2020-04-17 13:23:20 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:23 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2030.
+
+-- 2020-04-17 13:23:24 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 13:23:24 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 13:23:24 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:27 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2030.
+
+-- 2020-04-17 13:23:28 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 13:23:28 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2030.
+
+-- 2020-04-17 13:23:28 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:32 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2035.
+
+-- 2020-04-17 13:23:33 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 13:23:33 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 13:23:33 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:37 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2035.
+
+-- 2020-04-17 13:23:38 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 13:23:38 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2035.
+
+-- 2020-04-17 13:23:38 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:41 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2040.
+
+-- 2020-04-17 13:23:42 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 13:23:42 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 13:23:43 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:46 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of power sector in year 2040.
+
+-- 2020-04-17 13:23:46 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 13:23:46 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2040.
+
+-- 2020-04-17 13:23:47 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:51 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 13:23:51 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 13:23:51 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:55 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 13:23:55 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2045.
+
+-- 2020-04-17 13:23:56 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:23:56 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of residential sector in year 2050.
+
+-- 2020-04-17 13:23:58 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of power sector in year 2050.
+
+-- 2020-04-17 13:23:59 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2050.
+
+-- 2020-04-17 13:23:59 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2050.
+
+-- 2020-04-17 13:23:59 - muse.mca - WARNING
+Check growth constraints for wind.
+
+-- 2020-04-17 13:24:00 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of residential sector in year 2050.
+
+-- 2020-04-17 13:24:01 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of power sector in year 2050.
+
+-- 2020-04-17 13:24:03 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for newcapa agent A1 of gas sector in year 2050.
+
+-- 2020-04-17 13:24:03 - muse.sectors.sector - CRITICAL
+No demand, no investment needed for for retrofit agent A1 of gas sector in year 2050.
+
+-- 2020-04-17 13:24:03 - muse.mca - WARNING
+Check growth constraints for wind.
+
+</pre></div></div>
+</div>
+<p>Note: Another approach to model early obsolescence would be to modify the <code class="docutils literal notranslate"><span class="pre">demand_share</span></code> hooks which determine the demand againts which each agent invests.</p>
+</div>
+<div class="section" id="Where-to-store-new-functionality">
+<h2>Where to store new functionality<a class="headerlink" href="#Where-to-store-new-functionality" title="Permalink to this headline">¶</a></h2>
+<p>As was demonstrated above, new functionality can be added easily. However, running a jupyter notebook is not always the best approach. One can also store the functions in an arbitrary python file:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%writefile</span> mynewfunctions.py
+<span class="kn">from</span> <span class="nn">muse.outputs</span> <span class="kn">import</span> <span class="n">register_output_sink</span><span class="p">,</span> <span class="n">sink_to_file</span>
+
+<span class="nd">@register_output_sink</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;dummy&quot;</span><span class="p">)</span>
+<span class="nd">@sink_to_file</span><span class="p">(</span><span class="s2">&quot;.dummy&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">dummy</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+    <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">&quot;Nothing to see&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Overwriting mynewfunctions.py
+</pre></div></div>
+</div>
+<p>Then we can tell the TOML file where to find it:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="n">plugins</span> <span class="o">=</span> <span class="s">&quot;{cwd}/mynewfunctions.py&quot;</span>
+
+<span class="k">[[sectors.commercial.outputs]]</span>
+<span class="n">quantity</span> <span class="o">=</span> <span class="s">&quot;capacity&quot;</span>
+<span class="n">sink</span> <span class="o">=</span> <span class="s">&quot;dummy&quot;</span>
+<span class="n">overwrite</span> <span class="o">=</span> <span class="kc">true</span>
+</pre></div>
+</div>
+<p>Alternatively, <code class="docutils literal notranslate"><span class="pre">plugin</span></code> can also be given a list of paths rather than just a single one, as done below.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">settings</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;settings.toml&quot;</span><span class="p">)</span>
+<span class="n">settings</span><span class="p">[</span><span class="s2">&quot;plugins&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;</span><span class="si">{cwd}</span><span class="s2">/mynewfunctions.py&quot;</span><span class="p">]</span>
+<span class="n">settings</span><span class="p">[</span><span class="s2">&quot;sectors&quot;</span><span class="p">][</span><span class="s2">&quot;residential&quot;</span><span class="p">][</span><span class="s2">&quot;outputs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;quantity&quot;</span><span class="p">:</span> <span class="s2">&quot;capacity&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;sink&quot;</span><span class="p">:</span>  <span class="s2">&quot;dummy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;overwrite&quot;</span><span class="p">:</span> <span class="s2">&quot;true&quot;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+<span class="n">dump</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;modified_settings.toml&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">))</span>
+<span class="n">settings</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;time_framework&#39;: [2020, 2025, 2030, 2035, 2040, 2045, 2050],
+ &#39;foresight&#39;: 5,
+ &#39;regions&#39;: [&#39;USA&#39;],
+ &#39;interest_rate&#39;: 0.1,
+ &#39;interpolation_mode&#39;: &#39;Active&#39;,
+ &#39;log_level&#39;: &#39;info&#39;,
+ &#39;equilibrium_variable&#39;: &#39;demand&#39;,
+ &#39;maximum_iterations&#39;: 100,
+ &#39;tolerance&#39;: 0.1,
+ &#39;tolerance_unmet_demand&#39;: -0.1,
+ &#39;carbon_budget_control&#39;: {&#39;budget&#39;: []},
+ &#39;global_input_files&#39;: {&#39;projections&#39;: &#39;{path}/input/Projections.csv&#39;,
+  &#39;global_commodities&#39;: &#39;{path}/input/GlobalCommodities.csv&#39;},
+ &#39;sectors&#39;: {&#39;residential&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 1,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/residential/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/residential/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/residential/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/residential/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;quantity&#39;: &#39;capacity&#39;, &#39;sink&#39;: &#39;dummy&#39;, &#39;overwrite&#39;: &#39;true&#39;}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}]},
+  &#39;power&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 2,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/power/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/power/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/power/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/power/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: &#39;capacity&#39;,
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}]},
+  &#39;gas&#39;: {&#39;type&#39;: &#39;default&#39;,
+   &#39;priority&#39;: 3,
+   &#39;investment_production&#39;: &#39;share&#39;,
+   &#39;dispatch_production&#39;: &#39;share&#39;,
+   &#39;agents&#39;: &#39;{path}/technodata/Agents.csv&#39;,
+   &#39;technodata&#39;: &#39;{path}/technodata/gas/Technodata.csv&#39;,
+   &#39;commodities_in&#39;: &#39;{path}/technodata/gas/CommIn.csv&#39;,
+   &#39;commodities_out&#39;: &#39;{path}/technodata/gas/CommOut.csv&#39;,
+   &#39;existing_capacity&#39;: &#39;{path}/technodata/gas/Existing.csv&#39;,
+   &#39;outputs&#39;: [{&#39;filename&#39;: &#39;{cwd}/{default_output_dir}/{Sector}/{Quantity}/{year}{suffix}&#39;,
+     &#39;quantity&#39;: &#39;capacity&#39;,
+     &#39;sink&#39;: &#39;csv&#39;,
+     &#39;overwrite&#39;: True}],
+   &#39;interactions&#39;: [{&#39;net&#39;: &#39;new_to_retro&#39;, &#39;interaction&#39;: &#39;transfer&#39;}]},
+  &#39;residential_presets&#39;: {&#39;type&#39;: &#39;presets&#39;,
+   &#39;priority&#39;: 0,
+   &#39;consumption_path&#39;: &#39;{path}/technodata/preset/*Consumption.csv&#39;}},
+ &#39;timeslices&#39;: {&#39;all-year&#39;: {&#39;all-week&#39;: {&#39;night&#39;: 1460,
+    &#39;morning&#39;: 1460,
+    &#39;afternoon&#39;: 1460,
+    &#39;early-peak&#39;: 1460,
+    &#39;late-peak&#39;: 1460,
+    &#39;evening&#39;: 1460}},
+  &#39;level_names&#39;: [&#39;month&#39;, &#39;day&#39;, &#39;hour&#39;]},
+ &#39;plugins&#39;: [&#39;{cwd}/mynewfunctions.py&#39;]}
+</pre></div></div>
+</div>
+<p>At this point, we can run the simulation using the commandline (<code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">-m</span> <span class="pre">muse</span> <span class="pre">settings2.toml</span></code>). And of course, we can run it from this notebook:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">logging</span> <span class="kn">import</span> <span class="n">getLogger</span>
+<span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;muse&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># suppresses the log</span>
+<span class="n">mca</span> <span class="o">=</span> <span class="n">MCA</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">model_path</span> <span class="o">/</span> <span class="s2">&quot;modified_settings.toml&quot;</span><span class="p">)</span>
+<span class="n">mca</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;Results&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;Residential2020Capacity.dummy&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../../index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Extending the Generalized Sector</a><ul>
+<li><a class="reference internal" href="#Extending-outputs">Extending outputs</a><ul>
+<li><a class="reference internal" href="#Simple-output-extension">Simple output extension</a></li>
+<li><a class="reference internal" href="#Adding-TOML-parameters-to-the-outputs">Adding TOML parameters to the outputs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Modeling-early-obsolescence">Modeling early obsolescence</a></li>
+<li><a class="reference internal" href="#Where-to-store-new-functionality">Where to store new functionality</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="GeneralizedSectorOverview.html"
+                        title="previous chapter">Generalized Sector Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../api.html"
+                        title="next chapter">API</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/developer_guide/tutorial/ExtendingTheGeneralizedSector.ipynb.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../api.html" title="API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="GeneralizedSectorOverview.html" title="Generalized Sector Overview"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">MUSE 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Developer Guide</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../tutorial.html" >Tutorials</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Sustainable Gas Institute.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>

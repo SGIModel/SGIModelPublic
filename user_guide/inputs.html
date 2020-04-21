@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>MUSE input files &#8212; MUSE 0.6 documentation</title>
+    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="TOML primer" href="inputs/toml_primer.html" />
+    <link rel="prev" title="Running the demo simulation" href="quick-start.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="inputs/toml_primer.html" title="TOML primer"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="quick-start.html" title="Running the demo simulation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MUSE 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">User Guide</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="muse-input-files">
+<span id="input-files"></span><h1>MUSE input files<a class="headerlink" href="#muse-input-files" title="Permalink to this headline">¶</a></h1>
+<p>Broadly, MUSE consumes two kinds of inputs. Simulation <em>settings</em> specify how to
+run the simulation, e.g. which sectors to run, for how many years, and what to
+output. Simulation <em>data</em> describe the technologies involved in simulation, or
+the number and kind of agents.</p>
+<p>Simulation <em>settings</em> are specified in a TOML file. <a class="reference external" href="https://github.com/toml-lang/toml">TOML</a> is a simple, extensible,
+and intuitive file format well suited for specifying small sets of fairly complex data.</p>
+<p>Simulation <em>data</em> is specified in <a class="reference external" href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a>, a tabular data format not too dissimilar from
+excel tables, at least conceptually.</p>
+<p>MUSE requires at least:</p>
+<ul class="simple">
+<li><p>a single <a class="reference internal" href="inputs/toml.html#simulation-settings"><span class="std std-ref">general input file</span></a> for the simulation as a whole</p></li>
+<li><p>a file indicating initial market price <a class="reference internal" href="inputs/projections.html#inputs-projection"><span class="std std-ref">projections</span></a></p></li>
+<li><p>a file describing the <a class="reference internal" href="inputs/commodities.html#inputs-commodities"><span class="std std-ref">commodities in the simulation</span></a></p></li>
+<li><dl class="simple">
+<dt>for generalized sectors:</dt><dd><ul>
+<li><p>a file descring the <a class="reference internal" href="inputs/agents.html#inputs-agents"><span class="std std-ref">agents</span></a></p></li>
+<li><p>a file descring the <a class="reference internal" href="inputs/technodata.html#inputs-technodata"><span class="std std-ref">technologies</span></a></p></li>
+<li><p>a file descring the <a class="reference internal" href="inputs/commodities_io.html#inputs-icomms"><span class="std std-ref">input commodities</span></a> for each technology</p></li>
+<li><p>a file descring the <a class="reference internal" href="inputs/commodities_io.html#inputs-ocomms"><span class="std std-ref">output commodities</span></a> for each technology</p></li>
+<li><p>a file descring the <a class="reference internal" href="inputs/existing_capacity.html#inputs-existing-capacity"><span class="std std-ref">existing capacity</span></a> of a given
+sector</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>for each preset sector:</dt><dd><ul>
+<li><p>a csv file describing consumption for the duration of the simulation</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="inputs/toml_primer.html">TOML primer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="inputs/toml.html">Simulation settings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="inputs/toml.html#main-section">Main section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/toml.html#carbon-market">Carbon market</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/toml.html#global-input-files">Global input files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/toml.html#timeslices">Timeslices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/toml.html#standard-sectors">Standard sectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/toml.html#preset-sectors">Preset sectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/toml.html#legacy-sectors">Legacy Sectors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="inputs/csv.html">CSV Data Files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="inputs/projections.html">Initial Market Projection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/regions.html">Regional data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/commodities.html">Commodity Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/technodata.html">Techno-data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/timeslices.html">Time-slices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/commodities_io.html">Input Commodities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/commodities_io.html#output-commodities">Output Commodities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/commodities_io.html#general-features">General features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/existing_capacity.html">Existing Sectoral Capacity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inputs/agents.html">Agents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="quick-start.html"
+                        title="previous chapter">Running the demo simulation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="inputs/toml_primer.html"
+                        title="next chapter">TOML primer</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/user_guide/inputs.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="inputs/toml_primer.html" title="TOML primer"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="quick-start.html" title="Running the demo simulation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">MUSE 0.6 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >User Guide</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2019, Sustainable Gas Institute.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.4.
+    </div>
+  </body>
+</html>
